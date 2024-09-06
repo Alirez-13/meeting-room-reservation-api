@@ -2,10 +2,7 @@ package com.example.meetingroomreservationapi.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,10 +10,16 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
+@Table(name = "Rooms")
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomId;
-    private int room_capacity;
+
+    @Column(name = "room_capacity")
+    private int roomCapacity;
+
+    @Column(name = "is_empty")
     private int isEmpty = 1; // 1 is empty
 }

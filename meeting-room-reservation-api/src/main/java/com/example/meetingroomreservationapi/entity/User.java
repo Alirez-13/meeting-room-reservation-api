@@ -2,10 +2,7 @@ package com.example.meetingroomreservationapi.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,12 +10,19 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "role")
     private String role;
 }
