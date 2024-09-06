@@ -15,11 +15,11 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roomId;
+    private long roomId;
 
     @Column(name = "room_capacity")
     private int roomCapacity;
 
     @Column(name = "is_empty")
-    private int isEmpty = 1; // 1 is empty
+    private boolean isEmpty = true;
 }
