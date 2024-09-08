@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -14,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public List<User> getUsers() {
+    public List<User> getUsers(User user) {
 
         /*
         define a way to authenticate user role
@@ -26,7 +27,10 @@ public class UserService {
 
          */
 
+        if (Objects.equals(user.getRole(), "ADMIN")){
+            return userRepository.findAll();
+        }
 
-        return userRepository.findAll();
+        return null;
     }
 }
