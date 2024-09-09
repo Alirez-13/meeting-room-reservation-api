@@ -19,7 +19,7 @@ public class Reservation {
     private long reservationId;
 
     @Column(name = "user_id")
-    private int userId;
+    private long userId;
 
     @Column(name = "room_id")
     private int roomId;
@@ -32,4 +32,8 @@ public class Reservation {
 
     @Column(name = "status")
     private String status;
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,10 +28,14 @@ public class UserService {
 
          */
 
-        if (Objects.equals(user.getRole(), "ADMIN")){
+        if (Objects.equals(user.getRole(), "ADMIN")) {
             return userRepository.findAll();
         }
 
         return null;
     }
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
 }
