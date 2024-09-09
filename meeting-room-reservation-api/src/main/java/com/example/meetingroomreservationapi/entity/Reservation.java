@@ -33,7 +33,5 @@ public class Reservation {
     @Column(name = "status")
     private String status;
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+
 }
