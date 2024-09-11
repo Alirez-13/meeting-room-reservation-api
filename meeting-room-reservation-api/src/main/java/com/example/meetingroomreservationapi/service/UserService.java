@@ -19,23 +19,21 @@ public class UserService {
     public List<User> getUsers(User user) {
 
         /*
-        define a way to authenticate user role
-
-            as example
-            if(user.getRole == ADMIN){
-                return userRepository.findAll();
-            }
-
+            define a way to authenticate user role
          */
 
-        if (Objects.equals(user.getRole(), "ADMIN")) {
-            return userRepository.findAll();
-        }
-
-        return null;
+        return userRepository.findAll();
     }
+
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
 
+    public void addUser(User user) {
+        user.setFullName(user.getFullName());
+        user.setPassword(user.getPassword());
+        user.setRole(user.getRole());
+
+        userRepository.save(user);
+    }
 }
