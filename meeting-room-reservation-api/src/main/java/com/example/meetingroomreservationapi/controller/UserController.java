@@ -56,7 +56,7 @@ public class UserController {
         // prevent query twice
         Optional<User> user = userService.findUserById(userId);
         if (!user.isPresent()) {
-            return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+            throw new UserNotFoundException("User not found with Id: "+ userId );
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
