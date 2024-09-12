@@ -19,4 +19,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<UserErrorResponse> handleUserGenericException(Exception ex) {
+        UserErrorResponse err = new UserErrorResponse();
+
+        err.setStatus(HttpStatus.BAD_REQUEST.value());
+        err.setMessage(ex.getMessage());
+        err.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
 }
