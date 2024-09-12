@@ -1,15 +1,20 @@
 package com.example.meetingroomreservationapi.controller;
 
 import com.example.meetingroomreservationapi.entity.User;
+import com.example.meetingroomreservationapi.errHandler.UserNotFoundException;
 import com.example.meetingroomreservationapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -33,7 +38,6 @@ public class UserController {
         user2.setRole("MANAGER");
         userService.addUser(user2);
 
-
         User user3 = new User();
         user3.setFullName("Hanie Ghavipanje");
         user3.setPassword("1234");
@@ -45,5 +49,15 @@ public class UserController {
     public List<User> getAllUser(User user) {
 
         return userService.getUsers(user);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<String> getUserById(@PathVariable long userId) {
+        // prevent query twice
+        Optional<User> user = userService.findUserById(userId);
+        if (!user.isPresent()) {
+            return new ResponseEntity<>("User with id " + userId + " not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>("user is "+user, HttpStatus.OK);
     }
 }
