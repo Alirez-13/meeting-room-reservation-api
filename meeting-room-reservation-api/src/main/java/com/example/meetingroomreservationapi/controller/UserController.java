@@ -52,12 +52,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<String> getUserById(@PathVariable long userId) {
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable long userId) {
         // prevent query twice
         Optional<User> user = userService.findUserById(userId);
         if (!user.isPresent()) {
-            return new ResponseEntity<>("User with id " + userId + " not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("user is "+user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
