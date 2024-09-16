@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<UserErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<UserErrorResponse> handleUserNotFoundException(NotFoundException ex) {
         UserErrorResponse err = new UserErrorResponse();
 
         err.setStatus(HttpStatus.NOT_FOUND.value());
@@ -28,5 +28,16 @@ public class GlobalExceptionHandler {
         err.setTimeStamp(System.currentTimeMillis());
 
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnathorizeException.class)
+    public ResponseEntity<UserErrorResponse> unauthorizedUser(Exception ex) {
+        UserErrorResponse err = new UserErrorResponse();
+
+        err.setStatus(HttpStatus.UNAUTHORIZED.value());
+        err.setMessage(ex.getMessage());
+        err.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(err, HttpStatus.UNAUTHORIZED);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.meetingroomreservationapi.controller;
 
 import com.example.meetingroomreservationapi.entity.User;
-import com.example.meetingroomreservationapi.errHandler.UserNotFoundException;
+import com.example.meetingroomreservationapi.errHandler.NotFoundException;
 import com.example.meetingroomreservationapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +42,14 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getAllUser() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUser() {
+        List<User> usersList = userService.getAllUsers();
+
+        if (usersList.isEmpty()) {
+            throw new NotFoundException("users list is empty !");
+        }
+
+        return new ResponseEntity<>(usersList, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
@@ -51,17 +57,19 @@ public class UserController {
         // prevent query twice
         Optional<User> user = userService.findUserById(userId);
         if (!user.isPresent()) {
-            throw new UserNotFoundException("User not found with Id: " + userId);
+            throw new NotFoundException("User not found with Id: " + userId);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping()
     public ResponseEntity<User> updateUserById(User user) {
-
-        if (!userService.findUserById(user.getId()).isPresent()) {
-            throw new UserNotFoundException("User not found with Id: " + user.getId());
-        }
         return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUserById(@PathVariable long userId) {
+        userService.deleteUserById(userId);
+        return new ResponseEntity<>("User deleted successfully!", HttpStatus.OK);
     }
 }

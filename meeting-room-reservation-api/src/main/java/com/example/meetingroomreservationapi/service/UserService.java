@@ -1,6 +1,8 @@
 package com.example.meetingroomreservationapi.service;
 
 import com.example.meetingroomreservationapi.entity.User;
+import com.example.meetingroomreservationapi.errHandler.NotFoundException;
+import com.example.meetingroomreservationapi.errHandler.UnathorizeException;
 import com.example.meetingroomreservationapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,8 @@ public class UserService {
 
 
     public List<User> getAllUsers() {
-        /*
-            define a way to authenticate user role
-         */
+        //   define a way to authenticate user role
+
         return userRepository.findAll();
     }
 
@@ -28,21 +29,27 @@ public class UserService {
     }
 
     public void saveUser(User user) {
-        user.setFullName(user.getFullName());
-        user.setPassword(user.getPassword());
-        user.setRole(user.getRole());
-
         userRepository.save(user);
     }
 
     public void deleteUserById(Long userId) {
-       userRepository.deleteById(userId);
+
+        User user = userRepository.getReferenceById(userId);
+
+        if (Objects.equals(user.getRole(), "ADMIN") || Objects.equals(user.getRole(), "MANAGER")) {
+            userRepository.deleteById(userId);
+        } else if (user.getId() == 0) {
+            throw new NotFoundException("user not found!");
+        } else {
+            throw new UnathorizeException("You're not allowed be here!");
+        }
     }
 
     public User updateUser(User user) {
-        if (Objects.equals(user.getRole(), "ADMIN") || Objects.equals(user.getRole(), "MANAGER")) {
-            user.setRole(user.getRole());
+
+        if (findUserById(user.getId()).isPresent()) {
+            return userRepository.save(user);
         }
-        return userRepository.save(user);
+        throw new NotFoundException("User not found with Id: " + user.getId());
     }
 }
