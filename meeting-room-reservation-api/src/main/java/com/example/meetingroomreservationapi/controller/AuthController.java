@@ -10,18 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-
-
-import com.example.meetingroomreservationapi.entity.User;
-import com.example.meetingroomreservationapi.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +27,7 @@ public class AuthController {
     private Map<String, User> sessionStore = new HashMap<>();
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody User newUser) {
+    public ResponseEntity<String> signup(User newUser) {
         // Check if the id already exists
         Optional<User> existingUser = userService.findUserById(newUser.getId());
         if (existingUser.isPresent()) {
@@ -48,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User loginRequest) {
+    public ResponseEntity<String> login(User loginRequest) {
         Optional<User> user = userService.findUserById(loginRequest.getId());
 
         // Check if the user exists and the password is correct
