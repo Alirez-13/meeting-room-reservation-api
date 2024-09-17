@@ -7,9 +7,7 @@ import com.example.meetingroomreservationapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -20,12 +18,20 @@ public class UserService {
 
     public List<User> getAllUsers() {
         //   define a way to authenticate user role
-
-        return userRepository.findAll();
+        List<User> usersList = userRepository.findAll();
+        if (usersList.isEmpty()) {
+            throw new NotFoundException("user list is empty !");
+        }
+        return usersList;
     }
 
     public Optional<User> findUserById(Long userId) {
-        return userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
+
+        if (!user.isPresent()){
+            throw new NotFoundException("User not found with Id: " + userId);
+        }
+        return user;
     }
 
     public void saveUser(User user) {
