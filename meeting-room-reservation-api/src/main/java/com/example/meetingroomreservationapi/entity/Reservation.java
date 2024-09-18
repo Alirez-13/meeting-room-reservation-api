@@ -3,7 +3,7 @@ package com.example.meetingroomreservationapi.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,10 +25,10 @@ public class Reservation {
     private int roomId;
 
     @Column(name = "check_in_date")
-    private Date checkInDate;
+    private LocalDate checkInDate;
 
     @Column(name = "check_out_date")
-    private Date checkOutDate;
+    private LocalDate checkOutDate;
 
     @Column(name = "status")
     private String status;

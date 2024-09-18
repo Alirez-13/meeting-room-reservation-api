@@ -1,5 +1,6 @@
 package com.example.meetingroomreservationapi.errHandler;
 
+import com.example.meetingroomreservationapi.entity.Room;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,5 +40,16 @@ public class GlobalExceptionHandler {
         err.setTimeStamp(System.currentTimeMillis());
 
         return new ResponseEntity<>(err, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RoomOccupiedException.class)
+    public ResponseEntity<UserErrorResponse> occupiedRoom(Exception ex){
+        UserErrorResponse err = new UserErrorResponse();
+
+        err.setStatus(HttpStatus.CONFLICT.value());
+        err.setMessage(ex.getMessage());
+        err.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(err, HttpStatus.CONFLICT);
     }
 }

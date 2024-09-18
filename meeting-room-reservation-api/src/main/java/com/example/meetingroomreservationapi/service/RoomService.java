@@ -2,14 +2,13 @@ package com.example.meetingroomreservationapi.service;
 
 import com.example.meetingroomreservationapi.entity.Room;
 import com.example.meetingroomreservationapi.errHandler.NotFoundException;
+import com.example.meetingroomreservationapi.errHandler.RoomOccupiedException;
 import com.example.meetingroomreservationapi.repository.RoomRepository;
-import com.example.meetingroomreservationapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
@@ -38,10 +37,16 @@ public class RoomService {
                     room.setEmpty(updatedRoom.isEmpty());
                     return roomRepository.save(room);
                 })
-                .orElseThrow(() -> new NotFoundException("Room not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Room not found with ID: " + id));
     }
 
     public List<Room> getEmptyRooms() { //available
         return roomRepository.findByIsEmptyTrue();
+    }
+
+    public boolean isRoomEmpty(long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new NotFoundException("Room with ID: " + roomId + " not found!"));
+        return room.isEmpty();
     }
 }
