@@ -28,12 +28,6 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(User newUser) {
-        // Check if the id already exists
-        Optional<User> existingUser = userService.findUserById(newUser.getId());
-        if (existingUser.isPresent()) {
-            return new ResponseEntity<>("User id already exists.", HttpStatus.BAD_REQUEST);
-        }
-
         // Save new user
         userService.saveUser(newUser);
         return new ResponseEntity<>("User registered successfully.", HttpStatus.CREATED);
@@ -41,22 +35,19 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(User loginRequest) {
-        Optional<User> user = userService.findUserById(loginRequest.getId());
+        User user = userService.findUserById(loginRequest.getId());
 
         // Check if the user exists and the password is correct
-        if (user.isPresent() && user.get().getPassword().equals(loginRequest.getPassword())) {
+        if ( user.getId()>0 && user.getPassword().equals(loginRequest.getPassword())) {
             // Generate a session ID
             String sessionId = UUID.randomUUID().toString();
-            sessionStore.put(sessionId, user.get());
+            sessionStore.put(sessionId, user);
 
             return new ResponseEntity<>("Login successful. Session ID: " + sessionId, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Invalid username or password.", HttpStatus.UNAUTHORIZED);
         }
     }
-
-
-
 
 
     @GetMapping("/current-user")

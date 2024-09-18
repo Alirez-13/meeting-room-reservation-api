@@ -25,13 +25,9 @@ public class UserService {
         return usersList;
     }
 
-    public Optional<User> findUserById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-
-        if (!user.isPresent()){
-            throw new NotFoundException("User not found with Id: " + userId);
-        }
-        return user;
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with Id: " + userId));
     }
 
     public void saveUser(User user) {
@@ -39,23 +35,18 @@ public class UserService {
     }
 
     public void deleteUserById(Long userId) {
-
-        User user = userRepository.getReferenceById(userId);
-
-        if (Objects.equals(user.getRole(), "ADMIN") || Objects.equals(user.getRole(), "MANAGER")) {
-            userRepository.deleteById(userId);
-        } else if (user.getId() == 0) {
-            throw new NotFoundException("user not found!");
-        } else {
-            throw new UnathorizeException("You're not allowed be here!");
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with id :"+userId ));
+        userRepository.deleteById(userId);
     }
 
-    public User updateUser(User user) {
-
-        if (findUserById(user.getId()).isPresent()) {
-            return userRepository.save(user);
-        }
-        throw new NotFoundException("User not found with Id: " + user.getId());
+    public User updateUser(User updatedUser, Long id) {
+        return userRepository.findById(id)
+                .map(user ->{
+                    user.setPassword(updatedUser.getPassword());
+                    user.setFullName(updatedUser.getFullName());
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new NotFoundException("User not found with id :"+ id));
     }
 }

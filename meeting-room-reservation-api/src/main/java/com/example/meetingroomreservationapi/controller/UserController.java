@@ -38,14 +38,14 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Optional<User>> getUserById(@PathVariable long userId) {
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
 
         return new ResponseEntity<>(userService.findUserById(userId), HttpStatus.OK);
     }
 
-    @PutMapping()
-    public ResponseEntity<User> updateUserById(User user) {
-        return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUserById(@PathVariable Long userId,User user) {
+        return new ResponseEntity<>(userService.updateUser(user, userId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
