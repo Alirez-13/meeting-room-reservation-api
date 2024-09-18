@@ -56,16 +56,7 @@ public class AuthController {
     }
 
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("sessionId") String sessionId) {
-        // Remove user session
-        if (sessionStore.containsKey(sessionId)) {
-            sessionStore.remove(sessionId);
-            return new ResponseEntity<>("Logout successful.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Invalid session.", HttpStatus.UNAUTHORIZED);
-        }
-    }
+
 
 
     @GetMapping("/current-user")

@@ -22,44 +22,25 @@ public class UserController {
     // define @PostContruct for create Data in H2 DB
     @PostConstruct
     public void loadUser() {
-        User user1 = new User();
-        user1.setFullName("Alireza Holghi");
-        user1.setPassword("1234");
-        user1.setRole("ADMIN");
+        User user1 = new User(1, "Ali", "1234", "ADMIN");
         userService.saveUser(user1);
 
-        User user2 = new User();
-        user2.setFullName("Narges Niromand");
-        user2.setPassword("1234");
-        user2.setRole("MANAGER");
+        User user2 = new User(2, "Narges", "1234", "MANAGER");
         userService.saveUser(user2);
 
-        User user3 = new User();
-        user3.setFullName("Hanie Ghavipanje");
-        user3.setPassword("1234");
-        user3.setRole("USER");
+        User user3 = new User(30, "Hanie", "1234", "USER");
         userService.saveUser(user3);
     }
 
     @GetMapping()
     public ResponseEntity<List<User>> getAllUser() {
-        List<User> usersList = userService.getAllUsers();
-
-        if (usersList.isEmpty()) {
-            throw new NotFoundException("users list is empty !");
-        }
-
-        return new ResponseEntity<>(usersList, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<Optional<User>> getUserById(@PathVariable long userId) {
-        // prevent query twice
-        Optional<User> user = userService.findUserById(userId);
-        if (!user.isPresent()) {
-            throw new NotFoundException("User not found with Id: " + userId);
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+
+        return new ResponseEntity<>(userService.findUserById(userId), HttpStatus.OK);
     }
 
     @PutMapping()

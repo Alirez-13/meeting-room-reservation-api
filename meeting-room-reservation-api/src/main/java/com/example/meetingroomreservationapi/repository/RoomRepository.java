@@ -1,17 +1,14 @@
 package com.example.meetingroomreservationapi.repository;
 
+import com.example.meetingroomreservationapi.entity.Room;
 import com.example.meetingroomreservationapi.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User , Long> {
-
-    User findById(long id);
-
-    List<User> findAll();
-    Optional<User> findByFullName(String fullName);
+public interface RoomRepository extends JpaRepository<Room, Long> {
+    List<Room> findAll();
+    List<Room> findByIsEmptyTrue();
 }
