@@ -49,4 +49,14 @@ public class RoomService {
                 .orElseThrow(() -> new NotFoundException("Room with ID: " + roomId + " not found!"));
         return room.isEmpty();
     }
+
+    public void updateRoomStatus(long roomId) {
+        Room room = roomRepository.findById(roomId).map(
+                        room1 -> {
+                            room1.setEmpty(false);
+                            return roomRepository.save(room1);
+                        }
+                )
+                .orElseThrow(() -> new NotFoundException("Room with ID: " + roomId + " not found!"));
+    }
 }
