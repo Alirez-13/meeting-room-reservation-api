@@ -63,8 +63,6 @@ meeting-room-reservation-api/
 │   │   │               └── MeetingRoomReservationApiApplication.java
 │   │   └── resources
 │   │       ├── application.properties
-│   │       ├── data.sql
-│   │       └── schema.sql
 │   └── test
 │       ├── java
 │       │   └── com
