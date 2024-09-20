@@ -1,8 +1,6 @@
 package com.example.meetingroomreservationapi.controller;
 
 import com.example.meetingroomreservationapi.entity.Room;
-import com.example.meetingroomreservationapi.entity.User;
-import com.example.meetingroomreservationapi.errHandler.NotFoundException;
 import com.example.meetingroomreservationapi.service.RoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/rooms")

@@ -1,6 +1,5 @@
-package com.example.meetingroomreservationapi.errHandler;
+package com.example.meetingroomreservationapi.excHandler;
 
-import com.example.meetingroomreservationapi.entity.Room;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,8 +1,7 @@
 package com.example.meetingroomreservationapi.service;
 
 import com.example.meetingroomreservationapi.entity.User;
-import com.example.meetingroomreservationapi.errHandler.NotFoundException;
-import com.example.meetingroomreservationapi.errHandler.UnathorizeException;
+import com.example.meetingroomreservationapi.excHandler.NotFoundException;
 import com.example.meetingroomreservationapi.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

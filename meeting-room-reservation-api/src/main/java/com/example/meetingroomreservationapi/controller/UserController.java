@@ -1,7 +1,6 @@
 package com.example.meetingroomreservationapi.controller;
 
 import com.example.meetingroomreservationapi.entity.User;
-import com.example.meetingroomreservationapi.errHandler.NotFoundException;
 import com.example.meetingroomreservationapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,19 +21,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    // define @PostContruct for create Data in H2 DB
-    @PostConstruct
-    public void loadUser() {
-        User user1 = new User(1, "Ali", "1234", "ADMIN");
-        userService.saveUser(user1);
-
-        User user2 = new User(2, "Narges", "1234", "MANAGER");
-        userService.saveUser(user2);
-
-        User user3 = new User(30, "Hanie", "1234", "USER");
-        userService.saveUser(user3);
-    }
 
     @GetMapping()
     @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system")

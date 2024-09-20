@@ -2,8 +2,8 @@ package com.example.meetingroomreservationapi.service;
 
 import com.example.meetingroomreservationapi.entity.Reservation;
 import com.example.meetingroomreservationapi.entity.Room;
-import com.example.meetingroomreservationapi.errHandler.NotFoundException;
-import com.example.meetingroomreservationapi.errHandler.RoomOccupiedException;
+import com.example.meetingroomreservationapi.excHandler.NotFoundException;
+import com.example.meetingroomreservationapi.excHandler.RoomOccupiedException;
 import com.example.meetingroomreservationapi.repository.ReservationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +26,11 @@ public class ReservationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReservationService.class);
     public List<Reservation> getAllReservation() {
-
         logger.info("Fetching all reservations.");
         return reserveRepository.findAll();
     }
 
     public List<Room> getAvailableRoom() {
-
         logger.info("Fetching all available rooms.");
         return roomService.getEmptyRooms();
     }
@@ -66,8 +64,6 @@ public class ReservationService {
             roomService.updateRoomStatus(reservation.get().getRoomId());
             reservation.get().setStatus(updatedStatus);
             logger.info("Reservation status updated successfully for ID: {}", reservationId);
-        }else {
-            logger.error("Reservation with ID: {} not found.", reservationId);
         }
         return reservation;
     }
@@ -76,7 +72,6 @@ public class ReservationService {
         logger.info("Fetching all reservations with status 'WAITING'.");
         List<Reservation> waitingReservations = reserveRepository.findByStatus("WAITING");
         if (waitingReservations.isEmpty()) {
-            logger.error("No reservations found with status 'WAITING'.");
             throw new NotFoundException("There are no reservation requests with status 'WAITING'!");
         }
         logger.info("Found {} reservations with status 'WAITING'.", waitingReservations.size());

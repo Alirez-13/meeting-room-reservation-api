@@ -1,4 +1,4 @@
-package com.example.meetingroomreservationapi.errHandler;
+package com.example.meetingroomreservationapi.excHandler;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException(String message) {

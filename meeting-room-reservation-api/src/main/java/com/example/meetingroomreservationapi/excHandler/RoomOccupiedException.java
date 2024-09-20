@@ -1,4 +1,4 @@
-package com.example.meetingroomreservationapi.errHandler;
+package com.example.meetingroomreservationapi.excHandler;
 
 public class RoomOccupiedException extends RuntimeException{
     public RoomOccupiedException(String message) {
