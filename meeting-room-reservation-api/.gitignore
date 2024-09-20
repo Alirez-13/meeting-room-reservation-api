@@ -18,7 +18,10 @@ target/
 *.iws
 *.iml
 *.ipr
-*.log
+
+## Ignore the app log file
+meeting-room-reservation-api/*.log
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
