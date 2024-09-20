@@ -129,7 +129,7 @@ Body:
   "roomId": 2,
   "checkInDate": "2024-09-20",
   "checkOutDate": "2024-09-21",
-  "status": "BOOKED"
+  "status": "ACCEPTED"
 }
 ```
 3. Viewing Available Rooms:    
