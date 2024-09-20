@@ -19,8 +19,7 @@ target/
 *.iml
 *.ipr
 
-## Ignore the app log file
-meeting-room-reservation-api/*.log
+app.log.*
 
 ### NetBeans ###
 /nbproject/private/

@@ -1,4 +1,0 @@
-[2024-09-20 15:33:08.166] - 924 INFO [main] --- org.apache.catalina.core.StandardService: Starting service [Tomcat]
-[2024-09-20 15:33:08.172] - 924 INFO [main] --- org.apache.catalina.core.StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.83]
-[2024-09-20 15:33:08.262] - 924 INFO [main] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Initializing Spring embedded WebApplicationContext
-[2024-09-20 15:33:15.757] - 924 INFO [http-nio-8080-exec-1] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Initializing Spring DispatcherServlet 'dispatcherServlet'
