@@ -86,7 +86,7 @@ meeting-room-reservation-api/
 + A code editor (e.g., IntelliJ IDEA, Eclipse)
 ### Installation
 1. Clone the repository:    
-`git clone https://github.com/your-username/meeting-room-reservation-api.git`    
+`git clone https://github.com/Alirez-13/meeting-room-reservation-api.git`    
 `cd meeting-room-reservation-api`
 2. Build the project:    
 `mvn clean install`
