@@ -17,6 +17,7 @@ public class RoomService {
     private RoomRepository roomRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(RoomService.class);
+
     public List<Room> getAllRooms() {
 
         logger.debug("Fetching all rooms");
@@ -85,5 +86,10 @@ public class RoomService {
                     return new NotFoundException("Room with ID: " + roomId + " not found!");
                 });
         logger.info("Room status for room with ID: {} updated successfully", roomId);
+    }
+
+    public Room findRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new NotFoundException("User not found with Id: " + roomId));
     }
 }

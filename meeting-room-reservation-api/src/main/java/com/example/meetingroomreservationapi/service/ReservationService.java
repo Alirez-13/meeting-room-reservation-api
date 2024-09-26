@@ -1,5 +1,6 @@
 package com.example.meetingroomreservationapi.service;
 
+import com.example.meetingroomreservationapi.dto.ReservationDTO;
 import com.example.meetingroomreservationapi.entity.Reservation;
 import com.example.meetingroomreservationapi.entity.Room;
 import com.example.meetingroomreservationapi.excHandler.NotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -23,11 +25,17 @@ public class ReservationService {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(ReservationService.class);
-    public List<Reservation> getAllReservation() {
+
+    public List<ReservationDTO> getAllReservation() {
         logger.info("Fetching all reservations.");
-        return reserveRepository.findAll();
+        List<Reservation> reservations = reserveRepository.findAll();
+        return reservations.stream()
+                .map(this::convToDto) // Convert each Reservation entity to ReservationDTO
+                .collect(Collectors.toList()); // Collect the results as a List
     }
 
     public List<Room> getAvailableRoom() {
@@ -35,11 +43,10 @@ public class ReservationService {
         return roomService.getEmptyRooms();
     }
 
-    public Reservation CreateReservation(Reservation reservation) {
-        logger.info("Creating a reservation for room ID: {} by user ID: {}",
-                reservation.getRoomId(), reservation.getUserId());
-        LocalDate checkIn = reservation.getCheckInDate();
-        LocalDate checkOut = reservation.getCheckOutDate();
+    public Reservation CreateReservation(ReservationDTO reservationDTO) {
+
+        LocalDate checkIn = reservationDTO.getCheckInDate();
+        LocalDate checkOut = reservationDTO.getCheckOutDate();
 
         // validate Date
         if (checkIn.equals(checkOut) || checkIn.isAfter(checkOut)) {
@@ -47,21 +54,19 @@ public class ReservationService {
                     checkIn, checkOut);
             throw new IllegalArgumentException("Start date must be before the end date.");
         }
-
         // validate Room status
-        if (!roomService.isRoomEmpty(reservation.getRoomId())) {
-            throw new RoomOccupiedException("Room is occupied with ID:" + reservation.getRoomId());
+        if (!roomService.isRoomEmpty(reservationDTO.getRoomId())) {
+            throw new RoomOccupiedException("Room is occupied with ID:" + reservationDTO.getRoomId());
         }
-        // id is auto increment
-        Reservation requestedReserve = new Reservation(1, reservation.getUserId(), reservation.getRoomId(), checkIn, checkOut, "WAITING");
-        return reserveRepository.save(requestedReserve);
+
+        return reserveRepository.save(convToEntity(reservationDTO));
     }
 
     public Optional<Reservation> updateReservationStatus(long reservationId, String updatedStatus) {
         logger.info("Updating status of reservation with ID: {} to '{}'", reservationId, updatedStatus);
         Optional<Reservation> reservation = reserveRepository.findById(reservationId);
         if (reservation.isPresent()) {
-            roomService.updateRoomStatus(reservation.get().getRoomId());
+            roomService.updateRoomStatus(reservation.get().getRoom().getRoomId());
             reservation.get().setStatus(updatedStatus);
             logger.info("Reservation status updated successfully for ID: {}", reservationId);
         }
@@ -76,5 +81,37 @@ public class ReservationService {
         }
         logger.info("Found {} reservations with status 'WAITING'.", waitingReservations.size());
         return waitingReservations;
+    }
+
+    public ReservationDTO convToDto(Reservation reservation) {
+         /*
+        return new ReservationDTO(
+                reservation.getReservationId(),
+                reservation.getUser().getId(),
+                reservation.getRoom().getRoomId(),
+                reservation.getCheckInDate(),
+                reservation.getCheckOutDate(),
+                reservation.getStatus()
+        );
+        */
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setReservationId(reservation.getReservationId());
+        reservationDTO.setUserId(reservation.getUser().getId());
+        reservationDTO.setRoomId(reservation.getRoom().getRoomId());
+        reservationDTO.setCheckInDate(reservation.getCheckInDate());
+        reservationDTO.setCheckOutDate(reservation.getCheckOutDate());
+        reservationDTO.setStatus(reservation.getStatus());
+        return reservationDTO;
+    }
+
+    public Reservation convToEntity(ReservationDTO reservationDTO) {
+        return new Reservation(
+        reservationDTO.getReservationId(),
+                userService.findUserById(reservationDTO.getUserId()),
+                roomService.findRoomById(reservationDTO.getRoomId()),
+                reservationDTO.getCheckInDate(),
+                reservationDTO.getCheckOutDate(),
+                reservationDTO.getStatus()
+        );
     }
 }

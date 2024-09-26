@@ -1,5 +1,6 @@
 package com.example.meetingroomreservationapi.controller;
 
+import com.example.meetingroomreservationapi.dto.ReservationDTO;
 import com.example.meetingroomreservationapi.entity.Reservation;
 import com.example.meetingroomreservationapi.entity.Room;
 import com.example.meetingroomreservationapi.service.ReservationService;
@@ -31,7 +32,7 @@ public class ReservationController {
                             schema = @Schema(implementation = Reservation.class))),
             @ApiResponse(responseCode = "404", description = "No reservations found")
     })
-    public ResponseEntity<List<Reservation>> getAllReservations() {
+    public ResponseEntity<List<ReservationDTO>> getAllReservations() {
         return new ResponseEntity<>(reservationService.getAllReservation(), HttpStatus.OK);
     }
 
@@ -57,7 +58,7 @@ public class ReservationController {
                             schema = @Schema(implementation = Reservation.class))),
             @ApiResponse(responseCode = "400", description = "Invalid reservation request")
     })
-    public ResponseEntity<Reservation> createReservation(Reservation reservation) {
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservation){
         return new ResponseEntity<>(reservationService.CreateReservation(reservation), HttpStatus.OK);
     }
 
