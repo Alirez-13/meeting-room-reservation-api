@@ -1,4 +1,4 @@
-package com.example.meetingroomreservationapi.errHandler;
+package com.example.meetingroomreservationapi.excHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

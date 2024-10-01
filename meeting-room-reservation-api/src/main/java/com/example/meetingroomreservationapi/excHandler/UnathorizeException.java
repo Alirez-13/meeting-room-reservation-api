@@ -1,4 +1,4 @@
-package com.example.meetingroomreservationapi.errHandler;
+package com.example.meetingroomreservationapi.excHandler;
 
 public class UnathorizeException extends RuntimeException {
     public UnathorizeException(String message) {
